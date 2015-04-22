@@ -3,21 +3,28 @@ require 'board'
 describe Board do
   # We don't want to link the cell class with the board class directly
   # so we will pass a double called cell_class in options. 
-  let(:board) { Board.new({cell: cell_class}) }
+  let(:board) { Board.new({cell: cell_class, number_of_ships: 5}) }
   # what is cell_class? It's a double that we create and that has a method new like a real class has.
   # then in our double, we define what .new returns, and for our test, it returns a cell double.
   let(:cell_class) { double :cell_class, new: cell }
   # that we define below. Interesting concept to link the cell class to the board class.
   let(:cell) { double :cell, content: '' }
+  let(:ship) { double :ship, floating: true}
+  let(:cell_with_ship) { double :cell, content: ship}
 
   it 'has a 100 cells on the gird when created' do
     expect(board.grid.count).to eq 100
   end
 
-  it 'can place a ship' do
+  it 'knows the number of ships in the game' do
+    expect(board.number_of_ships).to eq 5
   end
 
-  xit 'knows the number of ships to be placed for the game' do
+  it 'knows if a coordinate is on the board' do
+    expect(board.has_coordinate('J10')).to be true
+  end
+
+  xit 'can place a ship' do
   end
 
   xit 'can work out the coordinate to use for a given ship and its size' do
@@ -27,9 +34,6 @@ describe Board do
   end
 
   xit 'does not allow ships to overlap each other when being placed' do
-  end
-
-  xit 'knows if a coordinate is on the board' do
   end
 
   xit 'does not place a ship on the board if any part is outside the boundaries' do
