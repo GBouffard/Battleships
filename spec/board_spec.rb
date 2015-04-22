@@ -1,13 +1,20 @@
 require 'board'
 
 describe Board do
-  # let(:board) { Board.new(10) }
+  # We don't want to link the cell class with the board class directly
+  # so we will pass a double called cell_class in options. 
+  let(:board) { Board.new({cell: cell_class}) }
+  # what is cell_class? It's a double that we create and that has a method new like a real class has.
+  # then in our double, we define what .new returns, and for our test, it returns a cell double.
+  let(:cell_class) { double :cell_class, new: cell }
+  # that we define below. Interesting concept to link the cell class to the board class.
+  let(:cell) { double :cell, content: '' }
 
-  xit 'has a 100 cells on the gird when created' do
+  it 'has a 100 cells on the gird when created' do
     expect(board.grid.count).to eq 100
   end
 
-  xit 'can place a ship' do
+  it 'can place a ship' do
   end
 
   xit 'knows the number of ships to be placed for the game' do
