@@ -18,4 +18,9 @@ class Board
   def has_coordinate(coordinate)
     @grid.key?(coordinate) 
   end
+
+  def place_a_ship(ship, coordinate)
+    # @grid[coordinate].place_ship(ship)
+    @grid[coordinate].content = ship
+  end
 end
