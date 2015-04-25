@@ -1,5 +1,5 @@
 class Board
-  attr_reader :size, :grid, :number_of_ships
+  attr_reader :size, :grid, :number_of_ships, :coordinates
   def initialize(options)
     @size = options.fetch(:size, 10)
     @cell = options.fetch(:cell)
@@ -20,12 +20,11 @@ class Board
   end
 
   def place_a_ship(ship, coordinate_1, direction)
-    # that method changes the content of the cell, to a ship.
+    # that method changes the content of each cell that corresponds to that ship to a ship.
     @ship_size = ship.size
     @coordinate_1 = coordinate_1
     @direction = direction
-    coordinates_to_use
-    @grid[coordinate_1].content = ship
+    coordinates_to_use.each { |coord| @grid[coord].content = ship }
   end
 
   def coordinates_to_use

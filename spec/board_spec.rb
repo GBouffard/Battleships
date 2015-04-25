@@ -1,4 +1,5 @@
 require 'board'
+require 'byebug'
 
 describe Board do
   # We don't want to link the cell class with the board class directly
@@ -9,6 +10,7 @@ describe Board do
   let(:cell_class) { double :cell_class, new: cell }
   # that we define below. Interesting concept to link the cell class to the board class.
   let(:cell) { double :cell }
+  let(:lil_ship) { double :ship, size: 1 }
   let(:ship) { double :ship, size: 3, floating: true }
   let(:cell_for_ship) { double :cell }
 
@@ -31,25 +33,28 @@ describe Board do
     # in that tracked cell, we want to place a ship, with a method place_a_ship
     # that take ship and coordinate as arguments. this method changes the content.
     # what we need to test is that the content has actually been changed as agreed:
-    expect(cell_for_ship).to receive(:content=).with ship
-    board.place_a_ship(ship, 'A1', 'horizontal')
+    expect(cell_for_ship).to receive(:content=).with lil_ship
+    board.place_a_ship(lil_ship, 'A1', 'horizontal')
   end
 
   it 'can work out the coordinate to use for a given horizontal ship and its size' do
-    board.grid['B2'] = cell_for_ship
-    allow(cell_for_ship).to receive(:content=).with ship
+    %w(B2 B3 B4).each { |c| board.grid[c] = cell_for_ship }
+    expect(cell_for_ship).to receive(:content=).with(ship).exactly(3).times
     board.place_a_ship(ship, 'B2', 'horizontal')
-    expect(board.coordinates_to_use).to eq %w(B2 B3 B4)
+    expect(board.coordinates).to eq %w(B2 B3 B4)
   end
 
   it 'can work out the coordinate to use for a given vertical ship and its size' do
-    board.grid['B2'] = cell_for_ship
-    allow(cell_for_ship).to receive(:content=).with ship
+    %w(B2 C2 D2).each { |c| board.grid[c] = cell_for_ship }
+    expect(cell_for_ship).to receive(:content=).with(ship).exactly(3).times
     board.place_a_ship(ship, 'B2', 'vertical')
-    expect(board.coordinates_to_use).to eq %w(B2 C2 D2)
+    expect(board.coordinates).to eq %w(B2 C2 D2)
   end
 
-  xit 'can place a ship of a given size (such as 3 for example) vertically' do
+  it 'can place a ship of a given size (such as 3 for example) vertically' do
+    %w(B2 C2 D2).each { |c| board.grid[c] = cell_for_ship }
+    expect(cell_for_ship).to receive(:content=).with(ship).exactly(3).times
+    board.place_a_ship(ship, 'B2', 'vertical')
   end
 
   xit 'does not allow ships to overlap each other when being placed' do
