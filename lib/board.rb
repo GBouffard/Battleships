@@ -1,9 +1,10 @@
 class Board
-  attr_reader :size, :grid, :number_of_ships, :coordinates
+  attr_reader :size, :grid, :number_of_ships, :coordinates, :all_ships_coords
   def initialize(options)
     @size = options.fetch(:size, 10)
     @cell = options.fetch(:cell)
     @number_of_ships = options.fetch(:number_of_ships, 3)
+    @all_ships_coords = []
     create_grid
   end
 
@@ -25,6 +26,8 @@ class Board
     @coordinate_1 = coordinate_1
     @direction = direction
     fail 'coordinates not on the board' unless coordinates_to_use.all? { |c| has_coordinate(c) }
+    fail 'Not possible. It would overlap another ship!' if coordinates_to_use.any? { |c| @all_ships_coords.include?(c) }
+    (@all_ships_coords += @coordinates).uniq!
     coordinates_to_use.each { |coord| @grid[coord].content = ship }
   end
 

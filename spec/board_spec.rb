@@ -61,7 +61,11 @@ describe Board do
     expect { board.place_a_ship(ship, 'D9', 'horizontal') }.to raise_error 'coordinates not on the board'
   end
 
-  xit 'does not allow ships to overlap each other when being placed' do
+  it 'does not allow ships to overlap each other when being placed' do
+    %w(B2 C2 D2 C1 C3).each { |c| board.grid[c] = cell_for_ship }
+    expect(cell_for_ship).to receive(:content=).with(ship).exactly(3).times
+    board.place_a_ship(ship, 'B2', 'vertical')
+    expect { board.place_a_ship(ship, 'C1', 'horizontal') }.to raise_error 'Not possible. It would overlap another ship!'
   end
 
   xit 'can hit items on the board' do
