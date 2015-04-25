@@ -21,7 +21,7 @@ describe Cell do
 
   it 'can be shot at' do
     cell.shoot!
-    expect(cell.been_hit).to eq true    
+    expect(cell.been_hit).to eq true
   end
 
   it 'cannot be shot twice' do
@@ -32,6 +32,6 @@ describe Cell do
   it 'transfers the shooting message to its content when being shot' do
     cell.place_ship(ship)
     expect(ship).to receive :hit
-    cell.shoot!    
+    cell.shoot!
   end
 end
