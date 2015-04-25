@@ -24,6 +24,7 @@ class Board
     @ship_size = ship.size
     @coordinate_1 = coordinate_1
     @direction = direction
+    fail 'coordinates not on the board' unless coordinates_to_use.all? { |c| has_coordinate(c) }
     coordinates_to_use.each { |coord| @grid[coord].content = ship }
   end
 

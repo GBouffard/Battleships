@@ -57,10 +57,11 @@ describe Board do
     board.place_a_ship(ship, 'B2', 'vertical')
   end
 
-  xit 'does not allow ships to overlap each other when being placed' do
+  it 'does not place a ship on the board if any part is outside the boundaries' do
+    expect { board.place_a_ship(ship, 'D9', 'horizontal') }.to raise_error 'coordinates not on the board'
   end
 
-  xit 'does not place a ship on the board if any part is outside the boundaries' do
+  xit 'does not allow ships to overlap each other when being placed' do
   end
 
   xit 'can hit items on the board' do
