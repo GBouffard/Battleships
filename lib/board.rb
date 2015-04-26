@@ -25,8 +25,7 @@ class Board
     @ship_size = ship.size
     @coordinate_1 = coordinate_1
     @direction = direction
-    fail 'coordinates not on the board' unless coordinates_to_use.all? { |c| has_coordinate(c) }
-    fail 'Not possible. It would overlap another ship!' if coordinates_to_use.any? { |c| @all_ships_coords.include?(c) }
+    legal_placement?
     (@all_ships_coords += @coordinates).uniq!
     coordinates_to_use.each { |coord| @grid[coord].content = ship }
   end
@@ -43,5 +42,14 @@ class Board
       @ship_size.times { @coordinates << "#{(@letter += 1).chr}#{@start_point}" }
     end
     @coordinates
+  end
+
+  def hit(cell_at)
+    grid[cell_at].content.shoot!
+  end
+
+  def legal_placement?
+    fail 'coordinates not on the board' unless coordinates_to_use.all? { |c| has_coordinate(c) }
+    fail 'Not possible. It would overlap another ship!' if coordinates_to_use.any? { |c| @all_ships_coords.include?(c) }
   end
 end

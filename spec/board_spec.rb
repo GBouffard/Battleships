@@ -68,8 +68,18 @@ describe Board do
     expect { board.place_a_ship(ship, 'C1', 'horizontal') }.to raise_error 'Not possible. It would overlap another ship!'
   end
 
-  xit 'can hit items on the board' do
-    # aren't we hitting the content of a cell?
+  it 'can hit items on the board' do
+    board.grid['A1'] = cell_for_ship
+    # we simply write the content of that cell with ship. We set it up this way:
+    allow(cell_for_ship).to receive(:content=).and_return(lil_ship)
+    # board.place_a_ship(lil_ship, 'A1', 'vertical')
+    # :shoot! is my method in cell, that hits the content.
+    # expect(cell_for_ship.content) didn't work. I had to write ship.
+    expect(ship).to receive(:shoot!)
+    # Double :cell received unexpected message :content with (no args)
+    # I don't understand. I even placed a ship in comparison to Stephen s tutorial
+    # to make sure the content is ship. Why is content not recognized?
+    board.hit('A1')
   end
 
   xit 'cannot hit a cell outside of the boundaries' do
